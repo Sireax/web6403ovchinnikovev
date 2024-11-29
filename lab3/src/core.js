@@ -76,7 +76,9 @@ function getOperationFn(initialValue, operatorFn) {
     let storedValue = initialValue;
 
     return function(value) {
-        storedValue = operatorFn(storedValue, value);
+        if (operatorFn) {
+            storedValue = operatorFn(storedValue, value);
+        }
         return storedValue;
     };
 }
@@ -97,7 +99,7 @@ function getOperationFn(initialValue, operatorFn) {
  * console.log(generator()); // 7
  * console.log(generator()); // 9
  */
-function sequence(start, step) {
+function sequence(start=0, step=1) {
     let current = start;
 
     return function() {
@@ -121,34 +123,78 @@ function sequence(start, step) {
  * deepEqual({arr: [22, 33], text: 'text'}, {arr: [22, 33], text: 'text'}) // true
  * deepEqual({arr: [22, 33], text: 'text'}, {arr: [22, 3], text: 'text2'}) // false
  */
-function deepEqual(firstObject, secondObject) {
-    if (typeof firstObject !== typeof secondObject) return false;
+function deepEqual(a, b, visited = new WeakMap()) {
+    // Проверка ссылочной эквивалентности и NaN
+    if (a === b) {
+        // Обработка случая +0 и -0
+        return a !== 0 || 1 / a === 1 / b;
+    }
 
-    if (Array.isArray(firstObject)) {
-        if (!Array.isArray(secondObject)) return false;
-        if (firstObject.length !== secondObject.length) return false;
+    if (a !== a && b !== b) { // Проверка NaN
+        return true;
+    }
 
-        for (let i = 0; i < firstObject.length; i++) {
-            if (!deepEqual(firstObject[i], secondObject[i])) return false;
+    // Проверка на тип и null
+    if (
+        a == null || typeof a !== 'object' ||
+        b == null || typeof b !== 'object'
+    ) {
+        return false;
+    }
+
+    // Проверка циклических ссылок
+    if (visited.has(a)) {
+        return visited.get(a) === b;
+    }
+    visited.set(a, b);
+
+    // Сравнение конструкторов
+    if (a.constructor !== b.constructor) {
+        return false;
+    }
+
+    // Обработка массивов
+    if (Array.isArray(a)) {
+        if (!Array.isArray(b) || a.length !== b.length) {
+            return false;
+        }
+        for (let i = 0; i < a.length; i++) {
+            if (!deepEqual(a[i], b[i], visited)) {
+                return false;
+            }
         }
         return true;
     }
 
-    if (typeof firstObject === 'object') {
-        const keys1 = Object.keys(firstObject);
-        const keys2 = Object.keys(secondObject);
-
-        if (keys1.length !== keys2.length) return false;
-
-        for (const key of keys1) {
-            if (!deepEqual(firstObject[key], secondObject[key])) return false;
-        }
-        return true;
+    // Обработка объектов Date
+    if (a instanceof Date) {
+        return a.getTime() === b.getTime();
     }
 
-    return firstObject === secondObject;
+    // Обработка объектов RegExp
+    if (a instanceof RegExp) {
+        return a.toString() === b.toString();
+    }
+
+    // Получение всех собственных ключей, включая символы
+    const keysA = Reflect.ownKeys(a);
+    const keysB = Reflect.ownKeys(b);
+
+    if (keysA.length !== keysB.length) {
+        return false;
+    }
+
+    for (let key of keysA) {
+        if (!keysB.includes(key)) {
+            return false;
+        }
+        if (!deepEqual(a[key], b[key], visited)) {
+            return false;
+        }
+    }
+
+    return true;
 }
-
 module.exports = {
     isInteger,
     even,
