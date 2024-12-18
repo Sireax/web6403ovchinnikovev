@@ -1,0 +1,13 @@
+{
+  "/contact": {
+    "post": {
+      "success": true
+    }
+  },
+  "/contact-fail": {
+    "post": {
+      "success": false,
+      "message": "Нормально сделай"
+    }
+  }
+}

@@ -1,0 +1,204 @@
+@charset "UTF-8";
+/* Общие стили */
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+}
+
+main {
+  display: block;
+  padding: 20px;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  clear: both;
+}
+
+/* Стили для таблицы */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+/* Выравнивание в таблице */
+td:nth-child(2) {
+  text-align: right;
+}
+
+td:nth-child(3) {
+  text-align: center;
+}
+
+img {
+  animation: fade 0.5s ease-in-out;
+}
+
+tbody tr {
+  cursor: pointer;
+}
+tbody tr:hover {
+  transition: 0.3s;
+  background-color: #eee;
+  transform: scale(1.05);
+}
+
+.main-page__wrapper {
+  width: 100%;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.main-page__image-wrapper {
+  aspect-ratio: 3/2;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  border-radius: 8px;
+  max-width: calc(50% - 8px);
+}
+.main-page__image {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.main-page__text {
+  max-width: calc(50% - 8px);
+  width: 100%;
+}
+
+.missions-page__grid {
+  width: 100%;
+  gap: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-rows: auto;
+  padding: 0;
+}
+.missions-page__item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  grid-column: span 1;
+}
+.missions-page__image-wrapper {
+  aspect-ratio: 3/2;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  border-radius: 8px;
+}
+.missions-page__image {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+/* Форма отправки */
+
+.feedback-form {
+  background-color: #f9f9f9;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.feedback-form h2 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.feedback-form__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color .15s ease-in-out;
+  font-size: 16px;
+  color: white;
+  display: block;
+  margin: 0 auto;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
